@@ -37,14 +37,30 @@ const getTops = dom => {
     });
 };
 
-const requests = [];
-for (let offset = 0; offset < 250; offset += 10) {
-    requests.push(getForOffset(offset));
-}
-Promise.all(requests).then(promises => {
-    const res = _.flatMap(promises, data => getTops(data));
-    const json = JSON.stringify(res, null, 2);
-    fs.writeFile("/Users/knut/Desktop/all_topics.json", json, "utf8", () =>
-        console.log("Done Writing! ✍️")
-    );
-});
+const downloadAndWrite = (filepath) => {
+    const requests = [];
+    for (let offset = 0; offset < 250; offset += 10) {
+        requests.push(getForOffset(offset));
+    }
+
+    Promise.all(requests).then(promises => {
+        const res = _.flatMap(promises, data => getTops(data));
+        const json = JSON.stringify(res, null, 2);
+        fs.writeFile(filepath, json, "utf8", () =>
+            console.log("Done Writing! ✍️")
+        );
+    });
+};
+
+const main = () => {
+    const filepath = process.argv[2];
+    if (!filepath) {
+        console.error(
+            "⚠️ You need to supply the path that the file should be written to"
+        );
+        return;
+    }
+    downloadAndWrite(filepath);
+};
+
+main();
