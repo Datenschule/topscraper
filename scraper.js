@@ -25,8 +25,9 @@ const getTops = dom => {
     return Array.from(trs).map(tr => {
         const lis = tr.querySelectorAll(".bt-top-liste > li");
         const session = tr.querySelector("td:nth-child(2)").textContent;
-        const sessionData = Array.from(lis).map(li => {
+        const sessionData = Array.from(lis).map((li, index) => {
             const agg = {};
+            agg["index"] = index;
             agg["topic"] = li.querySelector("strong").textContent.trim();
             agg["speakers"] = Array.from(
                 li.querySelectorAll(".bt-redner-liste strong")
