@@ -23,6 +23,9 @@ const getForOffset = offset => {
 const getTops = dom => {
     const trs = dom.window.document.querySelectorAll(".bt-table-data tbody tr");
     return Array.from(trs).map(tr => {
+        const germanDate= tr.querySelector("td:first-child").getAttribute('data-th');
+        const [day, month, year] = germanDate.split(".");
+        const date = `${year}-${month}-${day}`;
         const lis = tr.querySelectorAll(".bt-top-liste > li");
         const session = tr.querySelector("td:nth-child(2)").textContent;
         const sessionData = Array.from(lis).map((li, index) => {
@@ -34,7 +37,7 @@ const getTops = dom => {
             ).map(strong => strong.textContent);
             return agg;
         });
-        return { tops: sessionData, session };
+        return { tops: sessionData, session, date };
     });
 };
 
